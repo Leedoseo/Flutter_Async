@@ -18,5 +18,5 @@ void main() {
 - `Future`, `async`, `await` 키워드를 통해 구현
 
 ![Sync vs Async](./sync-vs-async.png)
-
+---
 
