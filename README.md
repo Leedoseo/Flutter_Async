@@ -16,6 +16,7 @@ void main() {
 - 시간이 오래 걸릴 수 있는 작업을 미뤄두고, 다음 작업을 먼저 실행함
 - 대표적인 비동기 작업 : API 호출, 파일 읽기, 타이머 등
 - `Future`, `async`, `await` 키워드를 통해 구현
+
 ![Sync vs Async](./sync-vs-async.png)
 
 
