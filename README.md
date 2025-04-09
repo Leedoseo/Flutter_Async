@@ -197,3 +197,96 @@ number1 + 2 계산 시작!
 - `Stream`은 여러 개의 값을 시간 간격을 두고 비동기로 전달
 - 예를 들면, 센서 값, 사용자 입력, 채팅 메세지 등 계속 들어오는 데이터를 다룰 때 사용
 ![Stream Process](./async-Stream.png)
+
+---
+
+## ✅ 2-2-1. `Stream` 기본 사용법
+- `Stream`을 사용하려면 플러터에서 기본으로 제공하는 `dart:async`패키지를 불러와야함
+- `dart:async`패키지에서 제공하는 `StreamController`를 `listen()`해야 값을 지속적으로 반환 받을 수 있음
+
+```dart
+// Stream 기본 사용법
+import "dart:async";
+
+void main() {
+  final controller = StreamController(); // StreamController 선언
+  final stream = controller.stream; // 스트림 가져오기
+  
+  // Stream에 listen() 함수를 실행하면 값이 주입될 때마다 콜백 함수를 실행할 수 있음
+  final streamListener1 = stream.listen((val) {
+    print(val);
+  });
+  
+  // Stream에 값을 주입하기
+  controller.sink.add(1);
+  controller.sink.add(2);
+  controller.sink.add(3);
+  controller.sink.add(4);
+}
+```
+
+---
+
+## ✅ 2-2-2. 브로드캐스트 스트림
+스트림은 단 한번만 `listen()`을 실행할 수 있음
+하지만 하나의 스트림을 생성하고 여러 번 `listen()`함수를 실행할 때가 있음. 이 때 브로드캐스트 스트림을 사용하면 스트림을 여러번 `listen()`하도록 변환할 수 있음
+
+```dart
+import "dart:async";
+
+void main() {
+  final controller = StreamController();
+  
+  // 여러 번 리슨할 수 있는 Broadcast Stream 객체 생성
+  final stream = controller.stream.asBroadcastStream();
+  
+  // 첫 번째 listen() 함수
+  final streamListener1 = stream.listen((val) {
+    print("listening 1");
+    print(val);
+  });
+  
+  // 두 번째 listen() 함수
+  final streamListener2 = stream.listen((val) {
+    print("listening 2");
+    print(val);
+  });
+  
+  // add()를 실행할 때마다 listen()하는 모든 콜백 함수에 값이 주입됨
+  controller.sink.add(1);
+  controller.sink.add(2);
+  controller.sink.add(3);
+}
+```
+
+---
+
+## ✅ 2-2-3. 함수로 스트림 반환하기
+`StreamController`를 직접 사용하지 않고도 직접 스트림을 반환하는 함수를 작성할 수 있음
+`Future`를 반환하는 함수를 `async`로 함수를 선언하고 `return`키워드로 값을 반환하면 됨
+스트림을 반환하는 함수는 `async*`로 함수를 선언하고 `yield`키워드로 값을 반환해주면 됨
+
+```dart
+// 함수로 스트림 반환하는 방법
+import "dart:async";
+
+// Stream을 반환하는 함수는 async로 선언함
+Stream<String> calculate(int number) async* {
+  for (int i = 0; i < 5; i++) {
+    
+    // StreamController의 add()처럼 yield 키워드를 이용해서 값 변환
+    yield 'i = $i';
+    await Future.delayed(Duration(seconds: 1));
+  }
+}
+
+void playStream() {
+  calculate(1).listen((val){
+    print(val);
+  });
+}
+
+void main() {
+  playStream();
+}
+```
