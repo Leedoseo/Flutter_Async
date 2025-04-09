@@ -56,6 +56,7 @@ print("$number1 + $number2 코드 실행 끝");
 
 그러면 마지막 `print()`는 `Future.delayed()`안에 있는 `print()` 후에 호출되는거 아닌가??
 => 아님! `Future.delayed()`는 비동기 연산이기 때문에 CPU가 3초간 대기해야 한다는 메세지를 받으면 리소스를 낭비하지 않고 다음 코드를 실행함!
+
 ---
 
 ## ✅ 2-1. `async`와 `await`
@@ -149,6 +150,7 @@ Future<void> addNumbers(int number1, int number2) async {
 */
 ```
 이렇게 하면 `addNumbers(1, 1)`이 다 실행되고나서 `addNumbers(2, 2)`가 실행됨
+
 ---
 
 ## ✅ 2-1. `async`와 `await`
